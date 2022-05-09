@@ -6,24 +6,16 @@ from my_encoder import MyEncoder
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello():
-    return 'Hello World!'
-
-
-@app.route('/recipes/')
+@app.route('/recipes/', methods=['GET'])
 def get():
     """
         returns a list of recipes
         """
     recipes = retrieve()
-    print("recipes retrieved")
-    print(recipes)
-    data = []
-    for recipe in recipes:
-        data.append(MyEncoder().encode(recipe))
-    print("The response")
-    print(data)
+    data = [
+           MyEncoder().encode(recipe)
+           for recipe in recipes
+        ]
     return jsonify({
         'status': 'ok',
         'data': data
